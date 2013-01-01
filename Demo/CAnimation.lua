@@ -197,7 +197,9 @@ function CAnimation:Update(dt)
 	end
 end
 
-
+function CAnimation:EnableLoop(loop)
+	self.mIsLoop = loop
+end
 
 
 
