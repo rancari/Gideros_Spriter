@@ -6,12 +6,16 @@ function GetUsedMemory(cleanup)
 	return math.floor(collectgarbage("count"))
 end
 
+function GetTimeinMillis()
+	return os.timer()*1000
+end
+
 ResourceManagement.GetInstance():FreeCache()
-testAnim = {}
 
 
 --[[ TEST MEMORY LEAK ]]--
 print("Test memory leak")
+testAnim = {}
 print(GetUsedMemory(true))
 for i=1, 100 do
 	testAnim[i] = CAnimation.CreateWithSpriteSheetName("anim_spriter_demo", "1")
@@ -69,6 +73,12 @@ label:setPosition(0, screenH - 2)
 label:setScale(3)
 stage:addChild(label)
 
+--label fps
+local labelfps = TextField.new(nil, "fps: ")
+labelfps:setPosition(3*screenW/4, label:getHeight() + 2)
+labelfps:setScale(3)
+stage:addChild(labelfps)
+
 -- buttons
 local up = Bitmap.new(Texture.new("button/button_up.png"))
 local down = Bitmap.new(Texture.new("button/button_down.png"))
@@ -87,10 +97,25 @@ button:setPosition(0, 0)
 stage:addChild(button)
 
 
-
+local timeStame, dt = nil, 0
+local timeCounter, fpsCounter = 0, 0
 function _onEnterFrame()
-	mc.spr[mc.sprStream[mc.currentAnim]]:Update(30)
-	logo:Update(30)
+	if timeStame ~= nil then
+		dt = GetTimeinMillis() - timeStame
+	else
+		dt = 1
+	end
+	timeCounter = timeCounter + dt
+	fpsCounter = fpsCounter + 1
+	if timeCounter >= 1000 then
+		timeCounter = 0
+		labelfps:setText("fps: " .. fpsCounter)
+		fpsCounter = 0
+	end
+
+	timeStame = GetTimeinMillis()
+	mc.spr[mc.sprStream[mc.currentAnim]]:Update(dt)
+	logo:Update(dt)
 end
 
 stage:addEventListener(Event.ENTER_FRAME, _onEnterFrame)
