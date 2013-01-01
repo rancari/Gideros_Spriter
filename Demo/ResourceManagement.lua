@@ -1,6 +1,12 @@
+--[[
+This code is MIT licensed, see http://www.opensource.org/licenses/mit-license.php
+(C) 2013 Guava7
+]]
+
 ResourceManagement = Core.class()
 gResourceManagement = nil
 
+--[[http://lua-users.org/wiki/SplitJoin]]
 local function Split(str, delim, maxNb)
 	-- Eliminate bad cases...
 	if str == nil or delim == nil then return {str} end

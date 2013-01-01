@@ -1,3 +1,7 @@
+--[[
+This code is MIT licensed, see http://www.opensource.org/licenses/mit-license.php
+(C) 2013 Guava7
+]]
 
 if CSprite == nil then
 	require  "CSprite"

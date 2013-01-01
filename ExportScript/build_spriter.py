@@ -1,10 +1,96 @@
+# This code is MIT licensed, see http://www.opensource.org/licenses/mit-license.php
+# (C) 2013 Guava7
+
 import sys
 from sys import argv
-import pycmd
-from pycmd import *
 from xml.dom import minidom
 import Image, ImageDraw
+import os
 
+def exist(path):
+	return os.path.exists(path)
+	
+def GetFileNX(long_file_path):
+	return os.path.basename(long_file_path)
+
+
+def GetFileN(long_file_path):
+	filename = GetFileNX(long_file_path)
+	return os.path.splitext(filename)[0]
+	
+def GetPath(file):
+	if exist(file):
+		return os.path.dirname(os.path.realpath(file))
+	else:
+		print("[ERROR] [GetPath] file not found [%s]" %(file))
+		
+def GetFileAbsolutePath(file):
+	return GetPath(file) + "/" + GetFileNX(file)
+
+# list item format : {'name':reg_name, 'x': x, 'y': y, 'w': w, 'h': h, 'size': w*h, 'rearrangeX': x, 'rearrangeY': y}
+def Rearrange(list, width, height):
+	# echo("======width x height = %s %s======="%(width, height))
+	x = 0
+	y = 0
+	liney = 0
+	isAdd = False
+	isNewLine = False
+	
+	items = []
+	for obj in list:
+		items.append(obj)
+
+	if items[0]['w'] > width or items[0]['h'] > height:
+		return [-1, -1]
+
+	regions = []
+	reg = {'x':0, 'y':0, 'w':width, 'h':height, 'size':width*height}
+	regions.append(reg)
+	max_height = -1
+	max_width = -1
+	while len(items) > 0 and len(regions) > 0:
+		reg = regions.pop()
+		mix_dif = 99999999
+		select_item = -1
+		for obj in items:
+			if obj['w'] <= reg['w'] and obj['h'] <= reg['h']:
+				dif = (reg['w'] - obj['w']) + (reg['h'] - obj['h'])
+				if dif < mix_dif:
+					mix_dif = dif
+					select_item = obj
+					break
+		if not select_item == -1:
+			obj['rearrangeX'] = reg['x']
+			obj['rearrangeY'] = reg['y']
+			if max_height < obj['rearrangeY'] + obj['h']:
+				max_height = obj['rearrangeY'] + obj['h']
+			if max_width < obj['rearrangeX'] + obj['w']:
+				max_width = obj['rearrangeX'] + obj['w']
+			items.remove(obj)
+
+			regUp 		= {'x':reg['x'], 'y':reg['y'] + obj['h'], 'w':reg['w'], 'h':reg['h'] - obj['h'], 'size':reg['w']*(reg['h'] - obj['h'])}
+			regRight 	= {'x':reg['x'] + obj['w'], 'y':reg['y'], 'w':reg['w'] - obj['w'], 'h':obj['h'], 'size':(reg['w'] - obj['w'])*obj['h']}
+					
+			regions.append(regUp)
+			regions.append(regRight)
+			# break
+		# regions = sorted(regions, key=lambda k: k['size']) 
+	if (len(items) == 0):
+		# print (max_width, max_height, max_width*max_height)
+		return [max_width, max_height]
+	else:
+		return [-1, -1]
+
+def WriteFile(file, content):
+	f = open(file, "a")
+	f.write(content)
+	f.close()
+		
+def WriteNewFile(file, content):
+	f = open(file, "w")
+	f.write(content)
+	f.close()
+		
 def ArrangeSingleImage(data_images):
 	list_sizew = [64, 128, 64,  128,  256,  128,  256,  512,  256,  512]
 	list_sizeh = [64, 64,  128, 128,  128,  256,  256,  256,  512,  512]

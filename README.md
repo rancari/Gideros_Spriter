@@ -7,7 +7,7 @@ An implementation of Spriter Animation in Gideros:
 
 This stuff consists two parts: 
 
-+ Export script using python, which export spriter file format ".scml" to ".lua" script (build_spriter.py, pycmd.py)
++ Export script using python, which export spriter file format ".scml" to ".lua" script (build_spriter.py)
 	
 	Requirement:
 		- Python 2.7 http://www.python.org/download/releases/2.7.3/
