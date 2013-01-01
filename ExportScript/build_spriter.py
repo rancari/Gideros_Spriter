@@ -29,7 +29,7 @@ def GetFileAbsolutePath(file):
 
 # list item format : {'name':reg_name, 'x': x, 'y': y, 'w': w, 'h': h, 'size': w*h, 'rearrangeX': x, 'rearrangeY': y}
 def Rearrange(list, width, height):
-	# echo("======width x height = %s %s======="%(width, height))
+	# print("======width x height = %s %s======="%(width, height))
 	x = 0
 	y = 0
 	liney = 0
@@ -92,11 +92,14 @@ def WriteNewFile(file, content):
 	f.close()
 		
 def ArrangeSingleImage(data_images):
-	list_sizew = [64, 128, 64,  128,  256,  128,  256,  512,  256,  512]
-	list_sizeh = [64, 64,  128, 128,  128,  256,  256,  256,  512,  512]
+	list_sizew = [64, 128, 64,  128,  256,  128,  256,  512,  256,  512, 1024, 1024, 2048, 2048]
+	list_sizeh = [64, 64,  128, 128,  128,  256,  256,  256,  512,  512, 512,  1024, 1024, 2048]
 	isRearrangeSuccess = False
 	w = 0
 	h = 0
+	
+	# print(data_images)
+	
 	for i in range(len(list_sizew)):
 		sizew = list_sizew[i]
 		sizeh = list_sizeh[i]
@@ -108,7 +111,7 @@ def ArrangeSingleImage(data_images):
 			break
 	
 	if isRearrangeSuccess == False:
-		echoerror("[ERROR]  Can not re-arrange. Output image is bigger than 512x512")
+		print("[ERROR]  Can not re-arrange. Output image is bigger than %sx%s"%(list_sizew[len(list_sizew)-1], list_sizeh[len(list_sizeh)-1]))
 		return None
 	return [w, h]
 
@@ -161,6 +164,10 @@ def build_spriter(input, output_folder):
 			file_width = int(file.getAttribute('width'))
 			file_height = int(file.getAttribute('height'))
 			data_images_map['%s:%s'%(folder_id, file_id)] = len(data_images)
+			
+			if file_width == 0 or file_height == 0:
+				tmp_img = Image.open(file_name)
+				file_width, file_height = tmp_img.size
 			data_images.append({
 				'name':file_name, 
 				'x': 0,
