@@ -48,6 +48,9 @@ def Rearrange(list, width, height):
 	regions.append(reg)
 	max_height = -1
 	max_width = -1
+	
+	items = sorted(items, key=lambda k: -k['w']*k['h'])  # sort items descending order by size
+	
 	while len(items) > 0 and len(regions) > 0:
 		reg = regions.pop()
 		mix_dif = 99999999
@@ -68,15 +71,25 @@ def Rearrange(list, width, height):
 				max_width = obj['rearrangeX'] + obj['w']
 			items.remove(obj)
 
-			regUp 		= {'x':reg['x'], 'y':reg['y'] + obj['h'], 'w':reg['w'], 'h':reg['h'] - obj['h'], 'size':reg['w']*(reg['h'] - obj['h'])}
-			regRight 	= {'x':reg['x'] + obj['w'], 'y':reg['y'], 'w':reg['w'] - obj['w'], 'h':obj['h'], 'size':(reg['w'] - obj['w'])*obj['h']}
-					
-			regions.append(regUp)
-			regions.append(regRight)
+			
+			#there're two way to split free region into up/right. Choose the best way (given bigger free region)
+			regUp1 		= {'x':reg['x'], 'y':reg['y'] + obj['h'], 'w':reg['w'], 'h':reg['h'] - obj['h'], 'size':reg['w']*(reg['h'] - obj['h'])}
+			regRight1 	= {'x':reg['x'] + obj['w'], 'y':reg['y'], 'w':reg['w'] - obj['w'], 'h':obj['h'], 'size':(reg['w'] - obj['w'])*obj['h']}
+			candidateSize1 = max(regUp1['size'], regRight1['size'])
+			
+			regUp2 		= {'x':reg['x'], 'y':reg['y'] + obj['h'], 'w':obj['w'], 'h':reg['h'] - obj['h'], 'size':obj['w']*(reg['h'] - obj['h'])}
+			regRight2 	= {'x':reg['x'] + obj['w'], 'y':reg['y'], 'w':reg['w'] - obj['w'], 'h':reg['h'], 'size':(reg['w'] - obj['w'])*reg['h']}
+			candidateSize2 = max(regUp2['size'], regRight2['size'])
+			
+			if candidateSize1 > candidateSize2:
+				regions.append(regUp1)
+				regions.append(regRight1)
+			else:
+				regions.append(regUp2)
+				regions.append(regRight2)
 			# break
-		# regions = sorted(regions, key=lambda k: k['size']) 
+		regions = sorted(regions, key=lambda k: -k['size'])  # sort regions descending order by size
 	if (len(items) == 0):
-		# print (max_width, max_height, max_width*max_height)
 		return [max_width, max_height]
 	else:
 		return [-1, -1]
