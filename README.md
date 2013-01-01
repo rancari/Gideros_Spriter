@@ -25,3 +25,5 @@ This stuff consists two parts:
 + And lua source files written in Gideros style, includes:
 	+ CSprite.lua, ResourceManagement.lua, CAnimation.lua: need for playing animation, CAnimation.lua is main script
 	+ spriter_demo.lua, spriter_demo.png : animation data
+
+Youtube demo: http://youtu.be/hD0rnQOQLLI
