@@ -5,7 +5,7 @@ An implementation of Spriter Animation in Gideros:
 + See: http://www.brashmonkey.com/spriter.htm
 + See: http://www.giderosmobile.com/
 
-NOTE: bone aimation has not been supported yet !
+NOTE: bone animation has not been supported yet !
 
 This stuff consists two parts: 
 
