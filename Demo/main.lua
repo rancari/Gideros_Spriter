@@ -25,17 +25,17 @@ print(GetUsedMemory(true))
 
 
 print("Test animation")
-local testAnim = CAnimation.CreateWithSpriteSheetName("spriter_demo", "1")
-local testAnim2 = CAnimation.CreateWithSpriteSheetName("spriter_demo", "First Animation")
-testAnim:setPosition(200, 200)
-testAnim2:setPosition(200, 400)
+local testAnim = CAnimation.CreateWithSpriteSheetName("Example", "Idle")
+local testAnim2 = CAnimation.CreateWithSpriteSheetName("Example", "Posture")
+testAnim:setPosition(200, 400)
+testAnim2:setPosition(500, 400)
 stage:addChild(testAnim)
 stage:addChild(testAnim2)
 
 
 function _onEnterFrame()
-	testAnim:Update(1)
-	testAnim2:Update(1)
+	testAnim:Update(30)
+	testAnim2:Update(30)
 end
 
 stage:addEventListener(Event.ENTER_FRAME, _onEnterFrame)
