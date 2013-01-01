@@ -14,7 +14,7 @@ testAnim = {}
 print("Test memory leak")
 print(GetUsedMemory(true))
 for i=1, 100 do
-	testAnim[i] = CAnimation.CreateWithSpriteSheetName("spriter_demo", "1")
+	testAnim[i] = CAnimation.CreateWithSpriteSheetName("anim_spriter_demo", "1")
 end
 for i=1, 100 do
 	testAnim[i] = nil
@@ -29,10 +29,11 @@ print(GetUsedMemory(true))
 --[[ TEST ANIMATION ]]--
 print("Test animation")
 
+-- MC
 local mc = CSprite.new()
 mc.spr = {
-	['Idle'] = CAnimation.CreateWithSpriteSheetName("Example", "Idle"),
-	['Posture'] = CAnimation.CreateWithSpriteSheetName("Example", "Posture"),
+	['Idle'] = CAnimation.CreateWithSpriteSheetName("anim_Example", "Idle"),
+	['Posture'] = CAnimation.CreateWithSpriteSheetName("anim_Example", "Posture"),
 }
 mc.sprStream = {
 	'Idle', 'Posture'
@@ -55,6 +56,12 @@ mc:setScale(math.min(screenW/1024, screenH/768))
 mc:setPosition(screenW/2, 3*screenH/4)
 mc.spr[mc.sprStream[mc.currentAnim]]:setVisible(true)
 stage:addChild(mc)
+
+-- logo
+local logo = CAnimation.CreateWithSpriteSheetName("anim_guava7", "First Animation")
+logo:setPosition(screenW - logo:getWidth(), screenH)
+logo:EnableLoop(true)
+stage:addChild(logo)
 
 --label
 local label = TextField.new(nil, "Current Animation: " .. mc.sprStream[mc.currentAnim])
@@ -83,6 +90,7 @@ stage:addChild(button)
 
 function _onEnterFrame()
 	mc.spr[mc.sprStream[mc.currentAnim]]:Update(30)
+	logo:Update(30)
 end
 
 stage:addEventListener(Event.ENTER_FRAME, _onEnterFrame)

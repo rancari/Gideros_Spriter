@@ -2,16 +2,18 @@
  <properties autorotation="0" fps="60" scaleMode="0" mouseToTouch="1" iosDevice="0" packageName="com.yourdomain.yourapp" logicalHeight="480" logicalWidth="320" mouseTouchOrder="0" retinaDisplay="0" touchToMouse="1" assetsOnly="0" orientation="1" architecture="0">
   <imageScales/>
  </properties>
+ <file source="anim_spriter_demo.png"/>
+ <file source="anim_spriter_demo.lua" excludeFromExecution="1"/>
+ <file source="anim_Example.png"/>
+ <file source="anim_Example.lua" excludeFromExecution="1"/>
+ <file source="anim_guava7.png"/>
+ <file source="anim_guava7.lua" excludeFromExecution="1"/>
  <folder name="button">
   <file source="button.lua"/>
   <file source="button_down.png"/>
   <file source="button_up.png"/>
  </folder>
- <file source="Example.png"/>
- <file source="Example.lua" excludeFromExecution="1"/>
  <file source="init.lua"/>
- <file source="spriter_demo.png"/>
- <file source="spriter_demo.lua" excludeFromExecution="1"/>
  <file source="main.lua"/>
  <file source="ResourceManagement.lua"/>
  <file source="CSprite.lua"/>
